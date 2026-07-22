@@ -14,6 +14,11 @@
 ---
 
 ## 更新日志
+### **2026.7.22**
+- 新增./Programming/C目录下main.c文件
+- 新增./Programming/C目录下Environment-Setup.md文件
+- 新增Programming文件夹
+
 ### **2026.7.21**
 - 新增数据结构笔记2.2.2.2
 
