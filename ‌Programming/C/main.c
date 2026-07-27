@@ -473,7 +473,7 @@ int main()
 
 
 //多路分支switch-case
-
+/*
 #include<stdio.h>
 
 int main()
@@ -500,3 +500,211 @@ int main()
 
     return 0;
 }
+    */
+
+
+
+
+//循环
+/*
+#include<stdio.h>
+
+int main()
+{
+    int x=0 ,n=0;
+    scanf("%d",&x);
+
+    if (x>999){
+        n=4;
+    }else if (x>99){
+        n=3;
+    }else if (x>9){
+        n=2;
+    }else{
+        n=1;
+    }
+
+    printf("是一个%d位数",n);
+
+    return 0;
+}
+*/
+/*
+#include<stdio.h>
+
+int main()
+{
+    int x=0 ,n=0;
+    scanf("%d",&x);
+    n++;
+    x/=10;
+    while(x>0){
+        n++;
+        x/=10;
+    }
+
+    printf("是一个%d位数",n);
+
+    return 0;
+}
+    */
+
+
+
+
+
+
+//while循环
+/*
+#include<stdio.h>
+
+int main()
+{
+    int x=0 ,n=0;
+    scanf("%d",&x);
+
+    while(x>0){
+        n++;
+        x/=10;
+        printf("x=%d,n=%d\n",x,n);
+    }
+
+    printf("是一个%d位数",n);
+
+    return 0;
+}
+*/
+
+
+
+
+
+//do-while循环
+/*
+#include<stdio.h>
+int main()
+{
+    int x=0 ,n=0;
+    scanf("%d",&x);
+    do{
+        n++;
+        x/=10;
+    }
+    while(x>0);
+    printf("是一个%d位数",n);
+    return 0;
+}
+*/
+
+
+
+//猜数
+/*
+#include <stdio.h>
+#include <stdlib.h>  // rand() 和 srand() 的声明就在这
+#include <time.h>    // 用于 time() 函数
+
+int main() {
+    srand(time(0));              // 用当前时间做种子，让每次运行结果不同
+    int number = rand() % 100 + 1; // 生成 1~100 的随机数
+    int count=0;
+    int a=0;
+    printf("我已经想好了一个1到100之间的随机数.\n");
+    do{
+        printf("请你猜：");
+        scanf("%d",&a);
+        count++;
+        if (a>number){
+            printf("大了\n");
+        }else if (a<number){
+            printf("小了\n");
+        }
+    }while(a!=number);
+    printf("你用了%d次猜对了",count);
+    return 0;
+}
+*/
+
+
+
+
+
+
+//算平均数
+/*
+#include <stdio.h>
+int main() {
+    int a,s=0,c=0;
+    scanf("%d",&a);
+    while(a != -1){
+        s=s+a;
+        c++;
+        scanf("%d",&a);
+    }
+    printf("平均数是%d",s/c);
+
+
+    int number,sum=0,count=0;
+    do{
+        scanf("%d",&number);
+        if (number != -1){
+            sum += number;
+            count++;
+        }
+    }while(number!=-1);
+    printf("%d\n",sum/count);
+    return 0;
+}
+    */
+
+
+
+
+//整数求逆
+/*
+#include <stdio.h>
+int main() {
+    int a=0,s,r=0;
+    scanf("%d",&a);
+    while(a!=0){
+        s=a%10;
+        r=r*10+s;
+        a=a/10;
+    }
+    printf("%d\n",r);
+    return 0;
+}
+*/
+
+
+
+
+//for循环
+/*
+#include <stdio.h>
+int main() {
+    int n,s=1,i=1;
+    scanf("%d",&n);
+    while(i<=n){
+        s=s*i;
+        i++;
+    }
+    printf("%d\n",s);
+    return 0;
+}
+*/
+#include <stdio.h>
+int main() {
+    int n,s=1,i=1;
+    scanf("%d",&n);
+    for (i=1;i<=n;i++){//初始条件；循环继续条件；循环每一轮要做的事情
+        s=s*i;
+    }
+    printf("%d\n",s);
+    return 0;
+}
+
+//for(count=10;count>0;count--)
+// 对于一开始的count=10,当count>0时，重复做循环体，每一轮循环在做完循环体内语句后，使count--
+
+
