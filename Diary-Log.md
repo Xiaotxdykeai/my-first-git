@@ -1,3 +1,8 @@
+#  2026-07-30
+- 看了数据结构第二节的内容，整理了[思维导图](./BasicTheory/Data-Structures/MindMaps/Section-02.md)
+- 还是要手动写
+- 明天见
+
 #  2026-07-29
 
 #### 今日学习内容
