@@ -693,6 +693,8 @@ int main() {
     return 0;
 }
 */
+
+/*
 #include <stdio.h>
 int main() {
     int n,s=1,i=1;
@@ -703,8 +705,158 @@ int main() {
     printf("%d\n",s);
     return 0;
 }
-
+*/
 //for(count=10;count>0;count--)
 // 对于一开始的count=10,当count>0时，重复做循环体，每一轮循环在做完循环体内语句后，使count--
 
 
+
+
+//循环的计算和选择
+/*
+#include <stdio.h>
+int main() {
+    int n;
+    scanf("%d",&n);
+
+    int fact=1;
+    int i=1;
+    while(i<=n){
+        fact *= i ;
+        i++;
+    }
+    printf("%d!=%d\n",n,fact);
+    return 0;
+}
+*/
+/*
+#include <stdio.h>
+int main() {
+    int n;
+    scanf("%d",&n);
+
+    int fact=1;
+    int i=1;
+for(i=1;i<=n;i++){
+    fact *= i;
+}
+    printf("%d!=%d\n",n,fact);
+    return 0;
+}
+*/
+//如果有固定次数，用for
+//如果必须执行一次，用do_while
+//其他情况while
+
+
+
+
+
+
+//循环控制
+/*
+#include <stdio.h>
+int main() {
+    int x;
+    scanf("%d",&x);
+    int isPrime=1;
+    int i;
+    for (i=2;i<x;i++){
+        if (x%i==0){
+            isPrime=0;
+            break;
+        }
+    }
+    if (isPrime==1){
+        printf("是素数");
+    }else{
+        printf("不是素数");
+    }
+    return 0;
+}
+*/
+//break:跳出循环
+//continue：跳过循环这一轮剩下的语句进入下一轮
+/*
+#include <stdio.h>
+int main() {
+    int x;
+    scanf("%d",&x);
+    int isPrime=1;
+    int i;
+    for (i=2;i<x;i++){
+        if (x%i==0){
+            isPrime=0;
+            continue;
+        }
+        printf("i=%d\n",i);
+    }
+    if (isPrime==1){
+        printf("是素数");
+    }else{
+        printf("不是素数");
+    }
+    return 0;
+}
+*/
+
+
+
+
+
+//嵌套的循环
+/*
+#include <stdio.h>
+int main() {
+    int x ,cnt=0;
+    //for (x=2;x<100;x++){
+    //while (cnt<50)
+    for (x=2;cnt<50;x++){
+        int isPrime=1;
+        int i;
+        for (i=2;i<x;i++){
+            if (x%i==0){
+                isPrime=0;
+                break;
+            }
+        }
+        if (isPrime==1){
+            printf("%d ",x);
+            cnt ++;
+        }
+        //x++;
+    }
+    printf("\n");
+    return 0;
+}
+*/
+
+
+
+
+
+//从嵌套的循环中跳出
+#include <stdio.h>
+int main() {
+    int x;
+    int one,two,five;
+    int exit=0;
+    scanf("%d",&x);
+    for(one=1;one<x*10;one++){
+        for(two=1;two<x*10/2;two++){
+            for(five=1;five<x*10/5;five++){
+                if(one+two*2+five*5==x*10){
+                    printf("可以用%d个1角加%d个2角加%d个5角获得%d元\n",one,two,five,x);
+                    exit=1;
+                    break;
+                    //goto out;
+                }
+            }
+            if (exit==1) break;
+        }
+        if (exit==1) break;
+    }
+    //out:
+    return 0;
+}
+//goto要有一个标号可以直接跳到标号
