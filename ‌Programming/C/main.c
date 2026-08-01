@@ -836,6 +836,7 @@ int main() {
 
 
 //从嵌套的循环中跳出
+/*
 #include <stdio.h>
 int main() {
     int x;
@@ -859,4 +860,94 @@ int main() {
     //out:
     return 0;
 }
+*/
 //goto要有一个标号可以直接跳到标号
+
+
+
+
+
+
+//前n项求和
+/*
+#include<stdio.h>
+
+int main()
+{
+    int n,i;
+    scanf("%d",&n);
+    double sum=0;
+    double sign=1.0;
+    for(i=1;i<n;i++){
+        sum += sign/i;
+        sign = -sign;
+    }
+    printf("%f",sum);
+    return 0;
+}
+    */
+
+
+
+
+
+
+//整数分解
+/*
+#include<stdio.h>
+
+int main()
+{
+    int x,mask=1;
+    scanf("%d",&x);
+    int t=x;
+    while(t>9){
+        t/=10;
+        mask*=10;
+    }
+    do{
+        int d=x/mask;
+        printf("%d",d);
+        if(mask>9){printf(" ");}
+        x %= mask;
+        mask/=10;
+    }while(mask>0);
+    printf("\n");
+
+    return 0;
+}
+*/
+
+
+
+
+
+
+//求最大公约数
+/*
+#include<stdio.h>
+
+int main()
+{
+    int a ,b;
+    scanf("%d %d",&a,&b);
+    int i,j,max=1;
+    for (i=1;i<=a;i++){
+        for(j=1;j<=b;j++){
+            if(a%i==0){if(b%i==0){max=i; }} 
+        }
+    }
+    printf("%d\n",max);
+//辗转相除法
+    int t;
+    while(b!=0){
+        t=a%b;
+        a=b;
+        b=t;
+    }
+    printf("gct=%d\n",a);
+
+
+    return 0;
+}
+*/
