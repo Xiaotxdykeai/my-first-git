@@ -653,7 +653,248 @@ A₁ → A₂ → A₃ → A₄ → A₅
 
 
 # 3.2.2_队列的顺序实现
--
+
+> 本讲进入队列的存储实现——**顺序队列**。核心难点：如何用**循环队列**解决“假溢出”问题，以及**判空/判满**的多种方案（考研高频考点）。
+
+
+## 一、顺序队列的定义
+
+### 1. 存储结构
+
+用**数组**存储队列元素，并设置两个指针：
+- **队头指针 front**：指向队头元素
+- **队尾指针 rear**：通常指向队尾元素的**下一个位置**（即下一个入队的位置）
+
+```c
+#define MaxSize 10
+typedef struct {
+    ElemType data[MaxSize];
+    int front;    // 队头指针（数组下标）
+    int rear;     // 队尾指针（数组下标）
+} SqQueue;
+```
+
+### 2. 两种指针语义
+
+| 设计方式 | front 含义 | rear 含义 | 本讲默认 |
+|----------|-----------|-----------|---------|
+| 方式一 | 指向队头元素 | 指向队尾元素的**下一个位置** |  默认 |
+| 方式二 | 指向队头元素 | 指向队尾元素 | 变体 |
+
+
+## 二、为什么需要循环队列？
+
+### 1. “假溢出”问题
+
+普通顺序队列中，元素出队后，front 指针后移，**前面空出的空间无法被再次使用**，导致 rear 指针到达数组末尾时，即使数组前方还有空间，也无法继续入队——这种现象称为**假溢出**。
+
+### 2. 解决方案：循环队列
+
+利用**取模运算（% MaxSize）**，让 rear 和 front 指针在数组末尾时**跳转回数组开头**，实现逻辑上的“环形”存储。
+
+> 核心公式（入队时移动 rear）：
+> ```c
+> rear = (rear + 1) % MaxSize;
+> ```
+> 同样，出队时移动 front 也使用取模运算。
+
+
+## 三、循环队列的基本操作（rear 指向队尾元素下一个位置）
+
+### 1. 初始化
+
+```c
+void InitQueue(SqQueue &Q) {
+    Q.front = 0;
+    Q.rear = 0;    // front == rear 表示空队列
+}
+```
+
+### 2. 判空
+
+```c
+bool QueueEmpty(SqQueue Q) {
+    return (Q.front == Q.rear);
+}
+```
+
+### 3. 入队（EnQueue）
+
+```c
+bool EnQueue(SqQueue &Q, ElemType x) {
+    if ((Q.rear + 1) % MaxSize == Q.front)   // 判满（牺牲一个单元）
+        return false;
+    Q.data[Q.rear] = x;          // ① 在 rear 位置放入元素
+    Q.rear = (Q.rear + 1) % MaxSize;  // ② rear 后移（循环）
+    return true;
+}
+```
+
+### 4. 出队（DeQueue）
+
+```c
+bool DeQueue(SqQueue &Q, ElemType &x) {
+    if (Q.front == Q.rear)       // 判空
+        return false;
+    x = Q.data[Q.front];         // ① 取出队头元素
+    Q.front = (Q.front + 1) % MaxSize;  // ② front 后移（循环）
+    return true;
+}
+```
+
+### 5. 读取队头元素
+
+```c
+bool GetHead(SqQueue Q, ElemType &x) {
+    if (Q.front == Q.rear)
+        return false;
+    x = Q.data[Q.front];   // 只读，front 不移动
+    return true;
+}
+```
+
+### 6. 计算队列长度（当前元素个数）
+
+```c
+int QueueLength(SqQueue Q) {
+    return (Q.rear - Q.front + MaxSize) % MaxSize;
+}
+```
+
+
+## 四、判空/判满的三种方案
+
+循环队列中，`front == rear` 既可能是“空”也可能是“满”，需要额外手段区分。
+
+### 方案一：牺牲一个存储单元（王道默认方案）
+
+| 条件 | 判断方式 |
+|------|---------|
+| 队空 | `front == rear` |
+| 队满 | `(rear + 1) % MaxSize == front` |
+| 元素个数 | `(rear - front + MaxSize) % MaxSize` |
+
+> 即**最后一个空闲单元不用**，用以区分空和满。
+
+### 方案二：增设 size 变量
+
+在结构体中增加 `int size;` 记录当前元素个数。
+
+| 条件 | 判断方式 |
+|------|---------|
+| 队空 | `size == 0` |
+| 队满 | `size == MaxSize` |
+
+**操作变化**：
+- 入队成功 → `size++`
+- 出队成功 → `size--`
+- 初始化 → `size = 0`
+- 元素个数直接就是 `size`
+
+### 方案三：增设 tag 变量
+
+在结构体中增加 `int tag;`，`tag=0` 表示最近执行的是删除，`tag=1` 表示最近执行的是插入。
+
+| 条件 | 判断方式 |
+|------|---------|
+| 队空 | `front == rear && tag == 0`（因删除而相遇） |
+| 队满 | `front == rear && tag == 1`（因插入而相遇） |
+
+**操作变化**：
+- 入队成功 → `tag = 1`
+- 出队成功 → `tag = 0`
+
+
+## 五、三种判空/判满方案对比
+
+| 方案 | 是否浪费空间 | 判空条件 | 判满条件 | 维护开销 |
+|------|------------|---------|---------|---------|
+| 方案一：牺牲单元 | 浪费 1 个单元 | `front == rear` | `(rear+1)%M == front` | 无额外维护 |
+| 方案二：size 变量 | 不浪费 | `size == 0` | `size == MaxSize` | 入/出队需维护 size |
+| 方案三：tag 变量 | 不浪费 | `front==rear && tag==0` | `front==rear && tag==1` | 入/出队需维护 tag |
+
+> 考研默认使用**方案一（牺牲一个存储单元）**，注意不要搞混。
+
+
+## 六、指针语义变体（rear 指向队尾元素）
+
+> 如果题目中 rear 指向的是**队尾元素本身**，则以下所有逻辑都需调整。
+
+### 1. 初始化
+
+```c
+void InitQueue(SqQueue &Q) {
+    Q.front = 0;
+    Q.rear = MaxSize - 1;   // rear 指向数组最后一个位置
+}
+```
+
+### 2. 判空
+
+```c
+bool Empty(SqQueue Q) {
+    return ((Q.rear + 1) % MaxSize == Q.front);
+}
+```
+
+### 3. 入队
+
+```c
+bool EnQueue(SqQueue &Q, ElemType x) {
+    if ((Q.rear + 2) % MaxSize == Q.front)   // 判满（需多检查一个位置）
+        return false;
+    Q.rear = (Q.rear + 1) % MaxSize;    // ① rear 先后移
+    Q.data[Q.rear] = x;                 // ② 再放入元素
+    return true;
+}
+```
+
+### 4. 出队
+
+出队逻辑与 rear 指向“下一个位置”的方式相同（`front` 指向队头元素本身）：
+```c
+x = Q.data[Q.front];
+Q.front = (Q.front + 1) % MaxSize;
+```
+
+
+## 七、两种指针语义对比
+
+| | rear 指向队尾元素**下一个位置**（默认） | rear 指向**队尾元素本身** |
+|---|---------------------------------------|--------------------------|
+| 初始化 | `front = 0; rear = 0;` | `front = 0; rear = MaxSize-1;` |
+| 判空 | `front == rear` | `(rear+1)%M == front` |
+| 判满（牺牲单元） | `(rear+1)%M == front` | `(rear+2)%M == front` |
+| 入队顺序 | 先放元素，再后移 rear | 先移动 rear，再放元素 |
+| 计算长度 | `(rear-front+M)%M` | `(rear-front+1+M)%M` |
+
+>  **考试核心**：看清题目中 rear 的含义再答题，不同设计逻辑完全不同！
+
+
+## 八、易错点清单
+
+| 易错点 | 正确做法 |
+|--------|---------|
+| 判满条件记错 | 默认方案：`(rear+1)%MaxSize == front` |
+| 指针移动忘取模 | 循环队列中 `front` 和 `rear` **每次移动都要 % MaxSize** |
+| rear 语义混淆 | 看清 rear 指向“队尾元素”还是“队尾元素下一个位置” |
+| 长度公式记混 | 默认方案：`(rear-front+MaxSize)%MaxSize` |
+| 入队时先放还是先移 | 取决于 rear 的语义：指向下一位置→先放后移；指向队尾元素→先移后放 |
+
+
+## 九、本讲核心收获
+
+1. **循环队列**：利用取模运算解决“假溢出”问题
+2. **默认语义**：front 指向队头元素，rear 指向队尾元素**下一个位置**
+3. **判空**：`front == rear`
+4. **判满（牺牲单元）**：`(rear + 1) % MaxSize == front`
+5. **队列长度**：`(rear - front + MaxSize) % MaxSize`
+6. **三种判空/判满方案**：牺牲单元、size 变量、tag 变量
+7. **rear 的两种语义**：考试时务必先确认是哪一种
+
+![思维导图](./images/PixPin_2026-08-04_22-09-26.png)
+
+
 # 3.2.3_队列的链式实现
 -
 # 3.2.4_双端队列
