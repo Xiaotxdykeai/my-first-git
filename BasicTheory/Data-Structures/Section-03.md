@@ -896,7 +896,206 @@ Q.front = (Q.front + 1) % MaxSize;
 
 
 # 3.2.3_队列的链式实现
--
+
+> 本讲学习队列的链式存储实现——**链队列**。链队列本质是**操作受限的单链表**（只允许在队尾插入、队头删除）。与循环队列相比，链队列最大的优势是**没有容量上限**，无需判满。
+
+
+## 一、链队列的定义
+
+### 1. 为什么需要头指针和尾指针？
+
+单链表只需头指针就能找到所有节点，但**在表尾插入**（入队）时，若无尾指针，需从头遍历到表尾，时间复杂度 O(n)。因此链队列**同时保存头指针和尾指针**，使入队和出队操作均为 O(1)。
+
+### 2. 存储结构定义
+
+```c
+// ① 队列节点（与单链表节点相同）
+typedef struct LinkNode {
+    ElemType data;
+    struct LinkNode *next;
+} LinkNode;
+
+// ② 队列（包含头指针和尾指针）
+typedef struct {
+    LinkNode *front;   // 队头指针（指向头节点）
+    LinkNode *rear;    // 队尾指针（指向队尾节点）
+} LinkQueue;
+```
+
+
+## 二、链队列的初始化
+
+### 2.1 带头节点（推荐）
+
+```c
+void InitQueue(LinkQueue &Q) {
+    Q.front = (LinkNode*)malloc(sizeof(LinkNode));  // 分配头节点
+    Q.rear = Q.front;           // 头尾都指向头节点
+    Q.front->next = NULL;       // 头节点指针域置空
+}
+
+// 判空
+bool Empty(LinkQueue Q) {
+    return (Q.front == Q.rear);   // 或 Q.front->next == NULL
+}
+```
+
+### 2.2 不带头节点
+
+```c
+void InitQueue(LinkQueue &Q) {
+    Q.front = NULL;    // 头指针指向NULL
+    Q.rear = NULL;     // 尾指针指向NULL
+}
+
+// 判空
+bool Empty(LinkQueue Q) {
+    return (Q.front == NULL);
+}
+```
+
+
+## 三、入队操作（EnQueue）
+
+### 3.1 带头节点
+
+```c
+bool EnQueue(LinkQueue &Q, ElemType x) {
+    LinkNode *s = (LinkNode*)malloc(sizeof(LinkNode));
+    if (s == NULL) return false;   // 内存分配失败
+    s->data = x;
+    s->next = NULL;
+
+    Q.rear->next = s;   // ① 当前队尾节点的next指向s
+    Q.rear = s;         // ② 更新队尾指针
+
+    return true;
+}
+```
+
+> 带头节点时，**第一个元素入队和后续元素入队的代码逻辑完全一致**，无需特殊处理。
+
+### 3.2 不带头节点
+
+```c
+bool EnQueue(LinkQueue &Q, ElemType x) {
+    LinkNode *s = (LinkNode*)malloc(sizeof(LinkNode));
+    if (s == NULL) return false;
+    s->data = x;
+    s->next = NULL;
+
+    if (Q.front == NULL) {        // 特殊情况：队列为空
+        Q.front = s;              // 队头指向s
+        Q.rear = s;               // 队尾也指向s
+    } else {
+        Q.rear->next = s;         // 正常后插
+        Q.rear = s;
+    }
+    return true;
+}
+```
+
+> 不带头节点时，**第一个元素入队需要特殊处理**（front 和 rear 都要指向新节点）。
+
+
+## 四、出队操作（DeQueue）
+
+### 4.1 带头节点
+
+```c
+bool DeQueue(LinkQueue &Q, ElemType &x) {
+    if (Q.front == Q.rear) return false;   // 队列为空
+
+    LinkNode *p = Q.front->next;    // p指向要删除的节点（第一个数据节点）
+    x = p->data;                    // 取出数据
+
+    Q.front->next = p->next;        // 头节点跳过p
+
+    if (Q.rear == p) {              // 特殊情况：删除的是最后一个元素
+        Q.rear = Q.front;           // 尾指针回到头节点
+    }
+
+    free(p);
+    return true;
+}
+```
+
+### 4.2 不带头节点
+
+```c
+bool DeQueue(LinkQueue &Q, ElemType &x) {
+    if (Q.front == NULL) return false;   // 队列为空
+
+    LinkNode *p = Q.front;          // p指向要删除的节点
+    x = p->data;
+
+    Q.front = p->next;              // 队头指针后移
+
+    if (Q.rear == p) {              // 删除的是最后一个元素
+        Q.front = NULL;
+        Q.rear = NULL;
+    }
+
+    free(p);
+    return true;
+}
+```
+
+
+## 五、带头节点 vs 不带头节点对比
+
+| 对比项 | 带头节点 | 不带头节点 |
+|--------|---------|-----------|
+| 初始化 | 分配头节点，front=rear=头节点 | front=rear=NULL |
+| 判空 | `front == rear` | `front == NULL` |
+| 入队（第一个元素） | 无需特殊处理 | 需要特殊处理 |
+| 出队（最后一个元素） | 需要特殊处理（rear回指头节点） | 需要特殊处理（front=rear=NULL） |
+| 代码一致性 | **更统一** | 边界情况需额外判断 |
+
+> **推荐**：带头节点的链队列代码更简洁，边界处理更统一。
+
+
+## 六、链队列 vs 循环队列对比
+
+| 对比项 | 循环队列（顺序存储） | 链队列（链式存储） |
+|--------|---------------------|-------------------|
+| 存储空间 | 连续数组 | 离散节点 |
+| 容量 | **固定**（MaxSize） | **动态**（可扩展） |
+| 判满 | 需要（多种方案） | 不需要（除非内存耗尽） |
+| 判空 | `front == rear` | `front == rear`（带头节点） |
+| 入队/出队 | O(1) | O(1) |
+| 头尾指针 | 数组下标 | 节点指针 |
+
+> 链队列不会“满”，这是相比循环队列的一大优势。
+
+
+## 七、易错点清单
+
+| 易错点 | 正确做法 |
+|--------|---------|
+| 带头节点出队时，**最后一个元素出队后 rear 未更新** | 需将 `rear` 指向头节点，否则野指针 |
+| 不带头节点入队时，**第一个元素未同时更新 front 和 rear** | 第一个元素入队时，front 和 rear 都指向新节点 |
+| 不带头节点出队时，**最后一个元素出队后 front/rear 未置 NULL** | 否则变成野指针 |
+| malloc 后未检查是否成功 | 应判断 `if (s == NULL) return false;` |
+| 忘记 free 释放节点 | 出队后要 `free(p)`，否则内存泄漏 |
+
+
+## 八、本讲核心收获
+
+1. **链队列 = 单链表 + 操作限制**（队尾入、队头出）
+2. **同时保存 front 和 rear 指针**，使入队/出队均为 O(1)
+3. **带头节点版本更推荐**，边界处理更统一
+4. **链队列不会满**（除非内存耗尽），无需判满
+5. **边界特判**：带头节点时，最后一个元素出队后要将 `rear` 指向头节点
+
+---
+
+**思考题**：如果链队列不带头节点，但额外增加一个 `size` 变量记录队列长度，入队/出队的代码是否可以简化？
+
+
+![思维导图](./images/PixPin_2026-08-05_23-00-41.png)
+
+
 # 3.2.4_双端队列
 -
 # 3.3.1_栈在括号匹配中的应用
