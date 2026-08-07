@@ -15,6 +15,9 @@
 
 ## 更新日志
 ### **2026.8.7**
+- 新增Programming\Algorithm-Solutions\luogu的P1001
+- 新增Programming\Algorithm-Solutions\luogu的P1000
+- 新增刷题模块
 - 新增数据结构笔记3.3.1
 
 ### **2026.8.6**
