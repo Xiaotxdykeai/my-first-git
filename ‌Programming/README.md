@@ -12,6 +12,7 @@
 ## 学习打卡
 
 ### C语言
+- 2026.8.8完成P1035 [[NOIP 2002 普及组] 级数求和](./Algorithm-Solutions/luogu/P1035.md)
 - 2026.8.7完成P1000 [超级玛丽游戏](./Algorithm-Solutions/luogu/P1000.md) P1001 [A+B Problem](./Algorithm-Solutions/luogu/P1001.md)
 - 2026.8.4完成6.1.7 编程练习解析[5-1~5-3](./C/homework.md)
 - 2026.8.3完成6.1.6 编程练习解析5-0：[n项求和](./C/homework.md)

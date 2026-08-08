@@ -14,6 +14,10 @@
 ---
 
 ## 更新日志
+
+### **2026.8.8**
+- 新增Programming\Algorithm-Solutions\luogu的P1035
+
 ### **2026.8.7**
 - 新增Programming\Algorithm-Solutions\luogu的P1001
 - 新增Programming\Algorithm-Solutions\luogu的P1000
