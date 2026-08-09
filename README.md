@@ -16,6 +16,7 @@
 ## 更新日志
 
 ### **2026.8.9**
+- 新增数据结构笔记3.3.2.2
 - 新增Programming\Algorithm-Solutions\luogu的P1047
 
 ### **2026.8.8**
