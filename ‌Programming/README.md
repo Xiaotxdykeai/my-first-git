@@ -12,6 +12,7 @@
 ## 学习打卡
 
 ### C语言
+- 2026.8.9完成P1047 [[NOIP 2005 普及组] 校门外的树](./Algorithm-Solutions/luogu/P1047.md)
 - 2026.8.8完成P1035 [[NOIP 2002 普及组] 级数求和](./Algorithm-Solutions/luogu/P1035.md)P1046 [[NOIP 2005 普及组] 陶陶摘苹果](./Algorithm-Solutions/luogu/P1046.md)
 - 2026.8.7完成P1000 [超级玛丽游戏](./Algorithm-Solutions/luogu/P1000.md) P1001 [A+B Problem](./Algorithm-Solutions/luogu/P1001.md)
 - 2026.8.4完成6.1.7 编程练习解析[5-1~5-3](./C/homework.md)
