@@ -12,6 +12,7 @@
 ## 学习打卡
 
 ### C语言
+- 2026.8.11完成P1089 [[NOIP 2004 提高组] 津津的储蓄计划](./Algorithm-Solutions/luogu/P1089.md)
 - 2026.8.10完成P1085 [[NOIP 2004 普及组] 不高兴的津津](./Algorithm-Solutions/luogu/P1085.md)
 - 2026.8.9完成P1047 [[NOIP 2005 普及组] 校门外的树](./Algorithm-Solutions/luogu/P1047.md)
 - 2026.8.8完成P1035 [[NOIP 2002 普及组] 级数求和](./Algorithm-Solutions/luogu/P1035.md)P1046 [[NOIP 2005 普及组] 陶陶摘苹果](./Algorithm-Solutions/luogu/P1046.md)
