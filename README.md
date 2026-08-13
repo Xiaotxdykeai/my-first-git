@@ -16,6 +16,7 @@
 ## 更新日志
 
 ### **2026.8.13**
+- 新增Programming\Algorithm-Solutions\luogu的P1151
 - 新增数据结构第三章的思维导图
 
 ### **2026.8.12**

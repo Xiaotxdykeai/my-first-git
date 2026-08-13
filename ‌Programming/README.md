@@ -12,6 +12,7 @@
 ## 学习打卡
 
 ### C语言
+- 2026.8.13完成 P1151 [子数整数](./Algorithm-Solutions/luogu/P1151.md)
 - 2026.8.12完成 P1150 [Peter 的烟](./Algorithm-Solutions/luogu/P1150.md)
 - 2026.8.11完成P1089 [[NOIP 2004 提高组] 津津的储蓄计划](./Algorithm-Solutions/luogu/P1089.md)
 - 2026.8.10完成P1085 [[NOIP 2004 普及组] 不高兴的津津](./Algorithm-Solutions/luogu/P1085.md)
