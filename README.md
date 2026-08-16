@@ -16,6 +16,7 @@
 ## 更新日志
 
 ### **2026.8.16**
+- 新增Programming\Algorithm-Solutions\luogu的P1179
 - 新增数据结构笔记4.2.1
 
 ### **2026.8.15**

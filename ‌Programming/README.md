@@ -12,6 +12,7 @@
 ## 学习打卡
 
 ### C语言
+- 2026.8.16完成 P1179 [[NOIP 2010 普及组] 数字统计](./Algorithm-Solutions/luogu/P1179.md)
 - 2026.8.15完成 P1161 [开灯](./Algorithm-Solutions/luogu/P1161.md)
 - 2026.8.14完成 P1152 [欢乐的跳](./Algorithm-Solutions/luogu/P1152.md)
 - 2026.8.13完成 P1151 [子数整数](./Algorithm-Solutions/luogu/P1151.md)
